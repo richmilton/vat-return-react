@@ -11,6 +11,17 @@ class App extends Component {
       obligations: []
     };
   }
+
+  static handleSubmit (e, data) {
+    if (data['username'] && data['password'] && data['usertype']) {
+      alert('well done');
+    }
+    else {
+      alert('fill the freakin form in you twat');
+    }
+    console.log(e, data);
+  }
+
   render() {
 
     return (
@@ -34,6 +45,10 @@ class App extends Component {
                 name: 'usertype',
                 options: [
                   {
+                    name: 'select',
+                    value: ''
+                  },
+                  {
                     name: 'agent',
                     value: 'agent'
                   },
@@ -46,9 +61,15 @@ class App extends Component {
                     value: 'organisation'
                   }
                 ]
-              }
+              },
+                {
+                  name: 'submit',
+                  type: 'submit',
+                  value: 'log in'
+                }
               ]
             }
+            onsubmit={(e, d) => App.handleSubmit(e, d)}
           />
 
         </header>

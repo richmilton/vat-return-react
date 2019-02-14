@@ -19,11 +19,11 @@ const Select = (props) => {
   >
     {renderOptions(props.options)}
   </select>
-}
+};
 
 const Option = (props) => {
   return <option key={props.value} id={props.name} value={props.value}>{props.name}</option>
-}
+};
 
 const renderOptions = (options) => {
   let selectOptions = [];
@@ -31,12 +31,11 @@ const renderOptions = (options) => {
     selectOptions.push(Option(ob));
   });
   return selectOptions;
-}
+};
 
 const renderFields = (fields) => {
   let formFields = [];
   fields.forEach(ob => {
-    console.log(ob);
     if (ob.type === 'select') {
       formFields.push(Select(ob))
     }
@@ -45,7 +44,7 @@ const renderFields = (fields) => {
     }
   });
   return formFields;
-}
+};
 
 class Form extends Component {
   constructor(props) {
@@ -65,13 +64,23 @@ class Form extends Component {
     this.setState(val);
   }
 
+  handleSubmit(e, data) {
+    e.preventDefault();
+    //console.log(this.props.onsubmit);
+    this.props.onsubmit(e, data, 'really?');
+  }
+
   componentDidUpdate () {
     console.log(this.state);
   }
 
   render() {
 
-    return <form name={this.props.name} id={this.props.name}>
+    return <form
+      name={this.props.name}
+      id={this.props.name}
+      onSubmit={(e, d)=>this.handleSubmit(e, this.state)}
+    >
       {renderFields(this.state.fields)}
     </form>
   }
