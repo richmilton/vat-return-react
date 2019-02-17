@@ -10,9 +10,10 @@ const Input = (props) => {
         type={props.type}
         name={props.name}
         id={props.name}
-        onChange={(e) => props.onchange(e)}
+        onChange={(e) => props.onInput(e)}
         autoComplete={'off'}
         placeholder={props.placeholder || props.label || props.name}
+        defaultValue={props.defVal}
       />
       {Label(props)}
     </li>
@@ -23,14 +24,23 @@ const Select = (props) => {
   return (
     <li key={props.name}>
       <select
+        //defaultValue={props.defVal}
         className={props.className || 'form-control'}
         key={props.name}
         name={props.name}
         id={props.name}
-        onChange={(ev) => props.onchange(ev)}
-        placeholder={props.placeholder || props.label || props.name}
+        onChange={(ev) => props.onInput(ev)}
+        //placeholder={props.placeholder || props.label || props.name}
       >
-        {renderOptions(props.options)}
+        <option value="" disabled>{props.placeholder || props.label || props.name}</option>
+        {props.options.map(
+          opt =>
+            <option
+              key={opt.value}
+              name={opt.name}
+              value={opt.value}>{opt.name}
+            </option>
+        )}
       </select>
       {Label(props)}
     </li>
@@ -43,29 +53,10 @@ const Label = (props) => {
       <label
         htmlFor={props.name}
         className={props.doLabelClass(props.name)}>
-        {props.dynamiclabel(props.name, props.label)}
+        {props.dynamicLabel(props.name, props.label)}
       </label>
     </div>
   )
-};
-
-const Option = (props) => {
-  return (
-      <option
-      key={props.value}
-      id={props.name}
-      value={props.value}>
-      {props.name}
-    </option>
-  )
-};
-
-const renderOptions = (options) => {
-  let selectOptions = [];
-  options.forEach(ob => {
-    selectOptions.push(Option(ob));
-  });
-  return selectOptions;
 };
 
 class Form extends Component {
@@ -91,10 +82,10 @@ class Form extends Component {
   renderFields = (fields) => {
     let formFields = [];
     fields.forEach(ob => {
-      ob.dynamiclabel = (n, l) => this.doLabel(n, l);
+      ob.dynamicLabel = (n, l) => this.doLabel(n, l);
       ob.doStyle = n => this.doStyle(n);
       ob.doLabelClass = n => this.doLabelClass(n);
-      ob.onchange = e => this.handleChange(e.target, e);
+      ob.onInput = e => this.handleChange(e.target, e);
       if (ob.type === 'select') {
         formFields.push(Select(ob))
       }
@@ -105,8 +96,8 @@ class Form extends Component {
     return formFields;
   };
 
-  handleChange = (t, e) => {
-    console.log(t.name, e.type);
+  handleChange = (t) => {
+    //console.log(t.name, e.type);
     let val = {};
     val[t.name] = t.value;
     this.setState(val);
@@ -115,6 +106,16 @@ class Form extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.onsubmit(this.state);
+  }
+
+  componentDidMount() {
+    let defaultVals = {};
+    this.state.fields.forEach(ob => {
+      if (ob.defVal) {
+        defaultVals[ob.name] = ob.defVal;
+      }
+      this.setState(defaultVals);
+    });
   }
 
   componentDidUpdate () {

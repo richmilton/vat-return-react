@@ -83,11 +83,11 @@ li {
 }
 
 .inputLabel {
-  font-size: 0.5em;
+  font-size: 0.7em;
   font-style: italic;
   text-align: left;
   width: 100%;
-  min-height: 1.4em;
+  min-height: 1.6em;
   line-height: 0.9em;
 }
 
@@ -106,3 +106,12 @@ input, select {
   transition: opacity 1s linear;
 }
 
+select:required:invalid {
+  color: gray;
+}
+option[value=""][disabled] {
+  display: none;
+}
+option {
+  color: black;
+}
