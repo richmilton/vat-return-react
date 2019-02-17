@@ -2,52 +2,62 @@ import React, { Component } from 'react';
 
 const Input = (props) => {
 
-  return <li key={props.name}>
+  return (
+    <li key={props.name}>
+      <input
+        className={props.className || 'form-control'}
+        key={props.name}
+        type={props.type}
+        name={props.name}
+        id={props.name}
+        onChange={(e) => props.onchange(e)}
+        autoComplete={'off'}
+        placeholder={props.placeholder || props.label || props.name}
+      />
       {Label(props)}
-    <input
-      key={props.name}
-      type={props.type}
-      name={props.name}
-      id={props.name}
-      onChange={(e) => props.onchange(e)}
-      autoComplete={'off'}
-      placeholder={props.placeholder || props.label || props.name}
-  />
-  </li>
+    </li>
+  )
 };
 
 const Select = (props) => {
-  return <li key={props.name}>
-    {Label(props)}
-    <select
-      key={props.name}
-      name={props.name}
-      id={props.name}
-      onChange={(ev) => props.onchange(ev)}
-      placeholder={props.placeholder || props.label || props.name}
-    >
-      {renderOptions(props.options)}
-    </select>
-  </li>
+  return (
+    <li key={props.name}>
+      <select
+        className={props.className || 'form-control'}
+        key={props.name}
+        name={props.name}
+        id={props.name}
+        onChange={(ev) => props.onchange(ev)}
+        placeholder={props.placeholder || props.label || props.name}
+      >
+        {renderOptions(props.options)}
+      </select>
+      {Label(props)}
+    </li>
+  )
 };
 
 const Label = (props) => {
-  return <div className={'inputLabel'} >
-    <label
-      htmlFor={props.name}
-      className={props.doLabelClass(props.name)}>
-      {props.dynamiclabel(props.name, props.label)}
-    </label>
-  </div>
+  return (
+    <div className={'inputLabel'} >
+      <label
+        htmlFor={props.name}
+        className={props.doLabelClass(props.name)}>
+        {props.dynamiclabel(props.name, props.label)}
+      </label>
+    </div>
+  )
 };
 
 const Option = (props) => {
-  return <option
-    key={props.value}
-    id={props.name}
-    value={props.value}>
-    {props.name}
-  </option>
+  return (
+      <option
+      key={props.value}
+      id={props.name}
+      value={props.value}>
+      {props.name}
+    </option>
+  )
 };
 
 const renderOptions = (options) => {

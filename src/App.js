@@ -35,28 +35,28 @@ class App extends Component {
                 {
                   type: 'text',
                   name: 'username',
-                  placeholder: 'user name *',
-                  label: 'User Name'
+                  placeholder: 'User name *',
+                  label: 'User name'
                 },
                 {
                   type: 'password',
                   name: 'password',
-                  placeholder: 'password *',
+                  placeholder: 'Password *',
                   label: 'Password'
                 },
                 {
                   type: 'vrn',
                   name: 'vat number',
-                  placeholder: 'vat number *',
+                  placeholder: 'VAT number *',
                   label: 'Vat Number'
                 },
                 {
                 type: 'select',
                 name: 'usertype',
-                label: 'User Type',
+                label: 'User type',
                 options: [
                   {
-                    name: 'user type',
+                    name: 'User type [select]',
                     value: ''
                   },
                   {
