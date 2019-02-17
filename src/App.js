@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
+//import Game from './TicTacToe';
 //import Obs from './components/obligations';
-import Obligations from './components/Obligations';
+//import Obligations from './components/Obligations';
 import Form from './components/Form';
+//import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class App extends Component {
   constructor(props) {
@@ -12,40 +14,49 @@ class App extends Component {
     };
   }
 
-  static handleSubmit (e, data) {
-    if (data['username'] && data['password'] && data['usertype']) {
+  static handleSubmit (data) {
+    console.log(data);
+    if (data['username'] && data['password'] && data['vat number']) {
       alert('well done');
     }
-    else {
-      alert('fill the freakin form in you twat');
-    }
-    console.log(e, data);
   }
 
   render() {
 
+    //const _this = this;
+
     return (
       <div className="App">
         <header className="App-header">
-
-          <Obligations />
           <Form
             name={'login'}
             fields={
               [
                 {
                   type: 'text',
-                  name: 'username'
+                  name: 'username',
+                  placeholder: 'user name *',
+                  label: 'User Name'
                 },
                 {
                   type: 'password',
-                  name: 'password'
-                },{
+                  name: 'password',
+                  placeholder: 'password *',
+                  label: 'Password'
+                },
+                {
+                  type: 'vrn',
+                  name: 'vat number',
+                  placeholder: 'vat number *',
+                  label: 'Vat Number'
+                },
+                {
                 type: 'select',
                 name: 'usertype',
+                label: 'User Type',
                 options: [
                   {
-                    name: 'select',
+                    name: 'user type',
                     value: ''
                   },
                   {
@@ -65,13 +76,12 @@ class App extends Component {
                 {
                   name: 'submit',
                   type: 'submit',
-                  value: 'log in'
+                  label: 'log in'
                 }
               ]
             }
-            onsubmit={(e, d) => App.handleSubmit(e, d)}
+            onsubmit={App.handleSubmit}
           />
-
         </header>
 
       </div>

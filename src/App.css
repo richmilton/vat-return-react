@@ -78,6 +78,30 @@ ol, ul {
   margin-left: 20px;
 }
 
-.game-info ol li {
+li {
   list-style-type: none
 }
+
+.inputLabel {
+  font-size: 0.5em;
+  font-style: italic;
+  text-align: left;
+  width: 100%;
+  min-height: 1.2em;
+}
+
+input, select {
+  font-size: 0.8em;
+}
+
+.show {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s linear;
+}
+.hide {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1s linear;
+}
+
