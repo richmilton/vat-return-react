@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//stateless component Input. Currently handles types text, number, checkbox
+// passed through props
 const Input = (props) => {
 
   return (
@@ -10,16 +12,18 @@ const Input = (props) => {
         type={props.type}
         name={props.name}
         id={props.name}
-        onChange={(e) => props.onInput(e)}
+        onChange={(ev) => props.onInput(ev)}
         autoComplete={'off'}
-        placeholder={props.placeholder || props.label || props.name}
-        defaultValue={props.defVal}
+        placeholder={props.placeholder || props.label || `${props.name} [${props.type}]`}
+        defaultValue={props.defVal || ''}
+        //checked={props.type === 'checkbox' ? false : false}
       />
       {Label(props)}
     </li>
   )
 };
 
+//stateless component Select
 const Select = (props) => {
   return (
     <li key={props.name}>
@@ -47,6 +51,7 @@ const Select = (props) => {
   )
 };
 
+//stateless component Label
 const Label = (props) => {
   return (
     <div className={'inputLabel'} >
@@ -63,8 +68,18 @@ class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fields: props.fields
+      fields: props.fields,
     };
+  }
+
+  defValues () {
+    let v = {};
+    this.props.fields.forEach(ob => {
+
+      v[ob.name] = ob.defVal;
+
+    });
+    return v;
   }
 
   doLabel (fname, label) {
@@ -72,7 +87,7 @@ class Form extends Component {
   }
 
   doLabelClass (fname) {
-    return this.state[fname] ? 'show' : 'hide';
+    return (this.state[fname]) ? 'show' : 'hide';
   }
 
   doStyle (fname) {
@@ -97,10 +112,19 @@ class Form extends Component {
   };
 
   handleChange = (t) => {
-    //console.log(t.name, e.type);
-    let val = {};
-    val[t.name] = t.value;
-    this.setState(val);
+    let newValObject = {}, val;
+    switch(t.type) {
+      case 'number':
+        val = isNaN(t.value) ? 0 : (parseFloat(t.value) || 0);
+        break;
+      case 'checkbox':
+        val = t.checked ? 'yes' : 'no';
+        break;
+      default:
+        val = t.value || '';
+    }
+    newValObject[t.name] = val;
+    this.setState(newValObject);
   };
 
   handleSubmit(e) {
@@ -109,13 +133,7 @@ class Form extends Component {
   }
 
   componentDidMount() {
-    let defaultVals = {};
-    this.state.fields.forEach(ob => {
-      if (ob.defVal) {
-        defaultVals[ob.name] = ob.defVal;
-      }
-      this.setState(defaultVals);
-    });
+    this.setState(this.defValues());
   }
 
   componentDidUpdate () {
