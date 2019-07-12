@@ -1,37 +1,38 @@
 import React, { Component } from 'react';
 import './App.css';
-//import Game from './TicTacToe';
-//import Obs from './components/obligations';
 import Obligations from './components/Obligations';
 import Form from './components/Form';
-//import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import {fields} from './components/formConfigs';
+import { fields } from './components/formConfigs';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      obligations: [],
-      loggedIn: 0
+      // obligations: [],
+      userData: null,
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleSubmit = (data) => {
-    console.log(data);
-    if (data['username'] && data['password'] && data['vat number']) {
-      this.setState({loggedIn: 1});
+  handleSubmit({ username, password, vatNumber }) {
+    if (username && password && vatNumber) {
+      this.setState({ userData: { username, password, vatNumber } });
     }
-  };
+  }
 
-  handleLogout = () => {
-    this.setState({loggedIn: 0});
-  };
+  handleLogout(e) {
+    e.preventDefault();
+    this.setState({ userData: null });
+  }
 
-  doContent () {
-    if (this.state.loggedIn) {
+  doContent() {
+    const { userData } = this.state;
+    if (userData !== null) {
       return (
         <React.Fragment>
           <button
+            type="submit"
             className="form-control btn-primary"
             onClick={this.handleLogout}
           >
@@ -39,21 +40,19 @@ class App extends Component {
           </button>
           <Obligations />
         </React.Fragment>
-      )
+      );
     }
-    else {
-      return (
-        <Form
-          name={'login'}
-          fields={fields}
-          onsubmit={this.handleSubmit}
-        />
-      )
-    }
+
+    return (
+      <Form
+        name="login"
+        fields={fields}
+        onsubmit={this.handleSubmit}
+      />
+    );
   }
 
   render() {
-
     return (
       <div className="App">
         <header className="App-header">
